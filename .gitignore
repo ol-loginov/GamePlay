@@ -10,6 +10,7 @@ Icon?
 Thumbs.db
 .metadata
 .settings
+.idea/
 /ipch
 /build
 /cmake
