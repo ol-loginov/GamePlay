@@ -14,6 +14,21 @@ MeshBatch::MeshBatch(const VertexFormat& vertexFormat, Mesh::PrimitiveType primi
 
 MeshBatch::~MeshBatch()
 {
+    GP_ASSERT(_material);
+
+    // Update our vertex attribute bindings.
+    for (unsigned int i = 0, techniqueCount = _material->getTechniqueCount(); i < techniqueCount; ++i)
+    {
+        Technique* t = _material->getTechniqueByIndex(i);
+        GP_ASSERT(t);
+        for (unsigned int j = 0, passCount = t->getPassCount(); j < passCount; ++j)
+        {
+            Pass* p = t->getPassByIndex(j);
+            GP_ASSERT(p);
+            p->setVertexAttributeBinding(nullptr);
+        }
+    }
+
     SAFE_RELEASE(_material);
     SAFE_DELETE_ARRAY(_vertices);
     SAFE_DELETE_ARRAY(_indices);
